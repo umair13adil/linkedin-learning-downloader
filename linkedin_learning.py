@@ -77,7 +77,7 @@ async def login(username, password):
         resp = await session.get(URL, proxy=PROXY)
         body = await resp.text()
 
-        #logging.info(body)
+        logging.info(body)
 
         # Looking for CSRF Token
         html = lxml.html.fromstring(body)
@@ -165,13 +165,13 @@ async def fetch_video(course: Course, chapter: Chapter, video: Video):
                 pass
 
         video_url = data['elements'][0]['selectedVideo']['url']['progressiveUrl']
-        subtitles = data['elements'][0]['selectedVideo']['transcript']['lines']
+        #subtitles = data['elements'][0]['selectedVideo']['transcript']['lines']
         duration_in_ms = int(data['elements'][0]['selectedVideo']['durationInSeconds']) * 1000
 
         if not video_exists:
             await download_file(video_url, video_file_path)
 
-        await write_subtitles(subtitles, subtitle_file_path, duration_in_ms)
+        #await write_subtitles(subtitles, subtitle_file_path, duration_in_ms)
 
     logging.info(f"[~] Done fetching course '{course.name}' Chapter no. {chapter.index} Video no. {video.index}")
 
