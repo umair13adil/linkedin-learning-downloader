@@ -77,9 +77,11 @@ async def login(username, password):
         resp = await session.get(URL, proxy=PROXY)
         body = await resp.text()
 
+        #logging.info(body)
+
         # Looking for CSRF Token
         html = lxml.html.fromstring(body)
-        csrf = html.xpath("//input[@id='loginCsrfParam-login']/@value").pop()
+        csrf = html.xpath("//input[@name='loginCsrfParam']/@value").pop()
         logging.debug(f"[*] CSRF: {csrf}")
         data = {
             "session_key": username,
@@ -112,9 +114,9 @@ async def fetch_course(course_slug):
         course = build_course(data['elements'][0])
 
         logging.info(f'[*] Access to {course.name} is {"GRANTED" if course.unlocked else "DENIED"}')
-        if not course.unlocked:
+        #if not course.unlocked:
             # Nothing to do here
-            return
+            #return
 
         await fetch_chapters(course)
         logging.info(f'[*] Finished  fetching course "{course.name}"')
